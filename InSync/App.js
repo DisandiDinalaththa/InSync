@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import LoadingScreen from './src/LoadingScreen';
-import LandingScreen from './src/LandingScreen';
+import LoadingScreen from './src/component/LoadingScreen';
+import LandingScreen from './src/component/LandingScreen';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);

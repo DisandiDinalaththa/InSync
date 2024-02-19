@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
 
 const LoadingScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Text style={styles.logo}>Your App Logo</Text>
+      <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
         <Text style={styles.loadingText}>Loading Application...</Text>
         <ActivityIndicator size="large" color="#6A0DAD" />
       </View>
@@ -24,10 +24,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#6A0DAD', // purple color
-    marginBottom: 10,
+    width: 200, // Adjust the width and height according to your logo size
+    height: 200,
+    marginBottom: 20, // Add margin for spacing
     borderRadius: 0,
   },
   loadingText: {
