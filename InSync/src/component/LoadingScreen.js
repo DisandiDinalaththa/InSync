@@ -24,14 +24,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 200, // Adjust the width and height according to your logo size
-    height: 200,
-    marginBottom: 20, // Add margin for spacing
-    borderRadius: 0,
+    width: 100, // Adjust the width and height of logo 
+    height: 100,
+    marginBottom: 30, // Add margin for spacing
+    borderRadius: 100,
+  },
+  loadingContainer: {
+    marginTop: 20, // Add space between the text and activity indicator(loading spinner)
+    alignItems: 'center',
   },
   loadingText: {
     fontSize: 18,
     color: '#6A0DAD', // purple color
+    marginBottom: 10, // Add space at the bottom of the text
   },
 });
 
