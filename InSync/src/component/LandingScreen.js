@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import FeedbackForm from './FeedbackForm';
 
 const LandingScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text>Landing Screen</Text>
-    </View>
-  );
-};
+  const [showFeedback, setShowFeedback] = useState(false);
+
+  const toggleFeedback = () => {
+    setShowFeedback(!showFeedback);
+  };
 
 const styles = StyleSheet.create({
   container: {
