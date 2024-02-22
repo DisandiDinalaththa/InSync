@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import FeedbackForm from './FeedbackForm';
 
@@ -10,13 +10,15 @@ const LandingScreen = () => {
     setShowFeedback(!showFeedback);
   };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F3E5F5', // light purple background
-  },
-});
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Welcome to My App</Text>
+      <TouchableOpacity onPress={toggleFeedback} style={{ position: 'absolute', top: 40, left: 20 }}>
+        <Feather name="menu" size={24} color="black" />
+      </TouchableOpacity>
+      {showFeedback && <FeedbackForm />}
+    </View>
+  );
+};
 
 export default LandingScreen;
