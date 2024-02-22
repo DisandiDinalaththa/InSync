@@ -10,7 +10,7 @@ export default function App() {
     // Simulate loading process
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // Change the duration as per your requirement
+    }, 3000); // loading spinner duration 
   }, []);
 
   return (
