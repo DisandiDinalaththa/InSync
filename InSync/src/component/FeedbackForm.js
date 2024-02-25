@@ -21,7 +21,7 @@ const FeedbackForm = () => {
         onChangeText={handleFeedbackChange}
         value={feedback}
         multiline
-        style={{ borderWidth: 1, borderColor: 'gray', padding: 10, height: 150, width: 300 }}
+        style={{ borderWidth: 2, borderColor: 'black', padding: 10, height: 150, width: 300 }}
       />
       <Button title="Submit Feedback" onPress={handleSubmit} />
     </View>
