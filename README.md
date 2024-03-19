@@ -6,5 +6,5 @@ Customer Service Steamlining Application
 
 **Frontend**
 
-run command : npm run android
-clear cache command : npx react-native start --reset-cache
+-run command : npm run android
+-clear cache command : npx react-native start --reset-cache
