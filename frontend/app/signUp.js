@@ -2,24 +2,37 @@ import React, { useRef, useState } from 'react';
 import { View, Image, Text, TextInput, Pressable, Alert, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StatusBar } from 'expo-status-bar';
-import { Octicons } from '@expo/vector-icons';
+import { Feather, Octicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Loading from '../components/loading';
 import KeyboardView from '../components/keyboardView';
+import { useAuth } from '../context/authContext';
+
 
 
 export default function SignUP() {
   const router = useRouter();
+  const {register} = useAuth();
   const [loading, setLoading] = useState(false);
+
   const emailRef = useRef ("");
   const passwordRef =  useRef("");
+  const usernameRef = useRef("");
 
   const  handleRegister = async() => {
-    if (!emailRef.current || !passwordRef.current){
-      Alert.alert('Sign Up', "Invalid Inputs!");
-    return;
+    if (!emailRef.current || !passwordRef.current || !usernameRef.current){
+      Alert.alert('Sign Up', "Please fill all the inputs!");
+      return;
     }
-    //register process start
+    setLoading (true);
+
+    let response = await register (emailRef.current, passwordRef.current, usernameRef.current );
+    setLoading(false);
+
+    //console.log('got result: ', response);
+    if(!response.success){
+        Alert.alert('Sign Up', response.msg);
+    }
   }
 
   return (
@@ -34,8 +47,22 @@ export default function SignUP() {
         <View className = "gap-10">
           <Text  style={{fontSize: hp(4), paddingTop: hp(1), paddingBottom: hp(2)}} className = "font-bold tracking-wider text-center text-neutral-900 ">Sign Up</Text>
 
-          {/* Email */}
+          
           <View className = "gap-4">
+
+            {/*username*/}
+            <View style = {{height: hp(6)}} className= "flex-row gap-4 bg-neutral-200 items-center rounded-xl">
+              <Feather name="user" size= {hp(2.4)} color="gray" style = {{marginLeft: 12}} />
+              <TextInput
+                onChangeText={value => usernameRef.current = value} 
+                style={{fontSize: hp(2)}}
+                className= "flex-1 font-semibold text-neutral-900"
+                placeholder="Username"
+                placeholderTextColor='gray'
+              />
+            </View>
+
+            {/* Email */}
             <View style = {{height: hp(6)}} className= "flex-row gap-4 bg-neutral-200 items-center rounded-xl">
               <Octicons name="mail" size= {hp(2.4)} color="gray" style = {{marginLeft: 12}} />
               <TextInput

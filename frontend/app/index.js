@@ -7,13 +7,14 @@ import Opening from '../components/opening';
 export default function LoadingPage() {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.upperContainer}>
-        <Text style={styles.welcomeText}>InSync</Text>
-        <Text style={styles.welcomeTextsmall}>AI-Powered Customer Representative</Text>
-      </View>
       <View style={styles.logoContainer}>
         <Image source={require('../public/images/logo.png')} style={styles.logo} /> 
       </View>
+      <View style={styles.upperContainer}>
+        <Text style={styles.appName}>InSync</Text>
+        <Text style={styles.description}>AI-Powered Customer Representative</Text>
+      </View>
+      
       <Opening size={wp('20%')} /> 
     </SafeAreaView>
   );
@@ -28,20 +29,20 @@ const styles = StyleSheet.create({
   },
   upperContainer: {
     alignItems: 'center', // Center content horizontally
-    marginTop: hp('5%'), // Adjust margin from top responsively
+    marginTop: hp('1%') // Adjust margin from top responsively
   },
   logoContainer: {
     alignItems: 'center',
     marginTop: hp('1%'), // Adjust margin from top responsively
   },
   appName: {
-    fontSize: hp('5%'), // Adjust font size responsively
+    fontSize: hp('12%'), // Adjust font size responsively
     fontWeight: 'bold',
     color: '#333333', // Adjust text color as needed
     marginBottom: hp('1%'), // Adjust margin from appName to description responsively
   },
   description: {
-    fontSize: hp('3%'), // Adjust font size responsively
+    fontSize: hp('2%'), // Adjust font size responsively
     fontWeight: '600', // Adjust font weight as needed
     color: '#666666', // Adjust text color as needed
     justifyContent:'center',
@@ -49,8 +50,8 @@ const styles = StyleSheet.create({
     marginBottom: hp('3%'), // Adjust margin from description to logo responsively
   },
   logo: {
-    width: wp('20%'), // Adjust logo size responsively
-    height: wp('20%'),
-    borderRadius: wp('10%'), // Adjust border radius responsively
+    width: wp('40%'), // Adjust logo size responsively
+    height: wp('40%'),
+    borderRadius: wp('100%'), // Adjust border radius responsively
   },
 });

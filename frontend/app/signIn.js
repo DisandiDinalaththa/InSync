@@ -6,19 +6,29 @@ import { Octicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Loading from '../components/loading';
 import KeyboardView from '../components/keyboardView';
+import { useAuth } from '../context/authContext';
 
 export default function SignIn() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const {login}= useAuth();
+
   const emailRef = useRef ("");
   const passwordRef =  useRef("");
 
   const  handleLogin = async() => {
     if (!emailRef.current || !passwordRef.current){
-      Alert.alert('Sign In', "Invalid Inputs!");
+      Alert.alert('Sign In', "Please fill email and password!");
     return;
     }
-    //login process start
+    setLoading (true);
+    const response = await login (emailRef.current , passwordRef.current);
+    setLoading(false);
+    console.log('sign in response: ', response);
+    if (!response.success) {
+      Alert.alert ('Sign In' , response.msg);
+    }
+
   }
 
   return (
