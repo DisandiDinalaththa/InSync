@@ -1,8 +1,9 @@
 import { View, Text, Pressable, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Import useEffect
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../context/authContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Voice from '@react-native-voice/voice';
 
 // (app) protected folder 
 export default function Home() {
@@ -14,7 +15,35 @@ export default function Home() {
     console.log('user data: ', user);
 
     const [recording, setRecording] = useState(false);
+
+    useEffect(() => { // Initialize Voice module when component mounts
+        Voice.onSpeechResults = onSpeechResults; // Set up onSpeechResults handler
+        return () => {
+            Voice.destroy().then(Voice.removeAllListeners); // Clean up Voice module when component unmounts
+        };
+    }, []);
+
+    // Function to handle the speech-to-text recognition
+    const startSpeechToText = async () => {
+        try {
+            await Voice.start('en-US');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Function to handle speech results
+    const onSpeechResults = (event) => {
+        const recognizedText = event.value[0];
+        console.log("Recognized Text:", recognizedText);
+    };
+
     const handleRecordingToggle = () => {
+        if (!recording) {
+            startSpeechToText();
+        } else {
+            Voice.stop();
+        }
         setRecording(!recording);
     };
 
