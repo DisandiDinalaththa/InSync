@@ -37,7 +37,7 @@ export default function SignIn() {
       <View style={{paddingTop: hp(12), paddingHorizontal: wp(8)}} className="flex-1 gap-10">
         {/*image */}
         <View >
-          <Image source={require('../public/images/signup.png')} style={{ width: 200, height: 200, marginLeft: 75 }} /> 
+          <Image source={require('../public/images/signIn.png')} style={{ width: 200, height: 200, marginLeft: 75 }} /> 
         </View>
 
         <View className = "gap-10">

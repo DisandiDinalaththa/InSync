@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../context/authContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Voice from '@react-native-voice/voice';
+import { FontAwesome } from '@expo/vector-icons';
 
 // (app) folder 
 export default function Home() {
@@ -74,7 +75,7 @@ export default function Home() {
             <View style={styles.maincontainer}>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: wp(4), marginTop: hp(2) }}>
                     <Pressable onPress={handleLogout}>
-                        <Text style={{ color: 'blue', fontWeight: 'bold' }}>Sign Out</Text>
+                        <FontAwesome name="sign-out" size={30} color="#6B7290" />
                     </Pressable>
                 </View>
 
@@ -91,19 +92,19 @@ export default function Home() {
                 <View style={styles.messageContainer}>
                     <View style={styles.cardContainer}>
                         <View style={styles.cardContent}>
-                            <Image source={require('../../public/images/logo.png')} style={styles.cardlogo} />
+                            <Image source={require('../../public/images/loan.jpg')} style={styles.cardlogo} />
                             <View style={styles.textContainer}>
                                 <Text style={styles.cardText}>Loan Calculation</Text>
-                                <Text style={styles.cardTextTwo}>Empowering your financial  decisions with smart numbers!</Text>
+                                <Text style={styles.cardTextTwo}>Improve your financial decision with intelligent numerical data analysis.</Text>
                             </View>
                         </View>
                     </View>
                     <View style={styles.cardContainer}>
                         <View style={styles.cardContent}>
-                            <Image source={require('../../public/images/logo.png')} style={styles.cardlogo} />
+                            <Image source={require('../../public/images/fraud.jpg')} style={styles.cardlogo} />
                             <View style={styles.textContainer}>
                                 <Text style={styles.cardText}>Stop unauthorized transactions</Text>
-                                <Text style={styles.cardTextTwo}>Notify your bank immediately to prevent any more unauthorised transactions</Text>
+                                <Text style={styles.cardTextTwo}>Notify your bank to prevent further unauthorised transactions.</Text>
                             </View>
                         </View>
                     </View>
@@ -123,7 +124,7 @@ export default function Home() {
 const styles = StyleSheet.create({
     maincontainer: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FFFF',
     },
     logoContainer: {
         alignItems: 'center',
@@ -165,10 +166,11 @@ const styles = StyleSheet.create({
       marginBottom: hp(10),
     },
   cardContainer: {
-      backgroundColor: '#F3E5F5', // light purple 
+      backgroundColor: 'rgba(199, 200, 201, 0.7)', // light purple 
       padding: wp(4),
       borderRadius: wp(5),
       margin: hp(2),
+      
     },
   cardContent: {
       flexDirection: 'row',
