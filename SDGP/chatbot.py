@@ -1,3 +1,4 @@
+from flask import Flask, request, jsonify
 import random
 import json
 import pickle
@@ -5,13 +6,11 @@ import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
-import speech_recognition as sr
-import pyttsx3
-import re
 from word2number import w2n
+import re
 
-engine = pyttsx3.init()
-recognizer = sr.Recognizer()
+app = Flask(__name__)
+
 lemmatizer = WordNetLemmatizer()
 intents = json.loads(open('intents.json').read())
 words = pickle.load(open('words.pkl', 'rb'))
@@ -44,20 +43,17 @@ def predict_class(sentence):
     return return_list
 
 def get_response(intents_list, intents_json):
+    confidence_threshold = 0.5
     if intents_list:
-        tag = intents_list[0]['intent']
-        list_of_intents = intents_json['intents']
-        for i in list_of_intents:
-            if i['tag'] == tag:
-                result = random.choice(i['responses'])
-                break
-        return result
-    else:
-        return "I'm sorry, I didn't understand that."
-
-def speak(text):
-    engine.say(text)
-    engine.runAndWait()
+        max_confidence_intent = max(intents_list, key=lambda x: float(x['probability']))
+        if float(max_confidence_intent['probability']) > confidence_threshold:
+            tag = max_confidence_intent['intent']
+            list_of_intents = intents_json['intents']
+            for intent in list_of_intents:
+                if intent['tag'] == tag:
+                    result = random.choice(intent['responses'])
+                    return result
+    return get_fallback_response()
 
 def calculate_loan_payment(loan_amount, annual_interest_rate, loan_term_years):
     monthly_interest_rate = annual_interest_rate / 12 / 100
@@ -99,117 +95,51 @@ def convert_word_to_number(word):
     else:
         return None
 
-def get_yes_no_response(recognizer, audio):
-    try:
-        response = recognizer.recognize_google(audio)
-        print("Recognized response:", response)
-        response = response.lower()
-        if "yes" in response:
-            return "yes"
-        elif "no" in response:
-            return "no"
-        else:
-            return None
-    except sr.UnknownValueError:
-        return None
-    except sr.RequestError:
-        return None
+@app.route('/chatbot', methods=['POST'])
+def chatbot():
+    data = request.json
+    user_message = data["message"]
+    response = process_message(user_message)
+    print(response)
+    return jsonify({"response": response})
 
-def extract_loan_details(text):
-    loan_amount_match = re.search(r'\b\d+\b', text)
-    if loan_amount_match:
-        loan_amount = int(loan_amount_match.group())
-    else:
-        loan_amount = None
-    
-    interest_rate_match = re.search(r'\b\d+(\.\d+)?%\b', text)
-    if interest_rate_match:
-        annual_interest_rate = float(interest_rate_match.group().rstrip('%'))
-    else:
-        annual_interest_rate = None
-    
-    loan_term_match = re.search(r'\b\d+\b years', text)
-    if loan_term_match:
-        loan_term_years = int(loan_term_match.group())
-    else:
-        loan_term_years = None
-    
-    return loan_amount, annual_interest_rate, loan_term_years
+def get_fallback_response():
+    fallback_responses = [
+        "I'm sorry, I didn't understand that.",
+        "I'm not sure how to respond to that.",
+        "Could you please rephrase that?",
+        "I'm still learning! Can you ask me something else?",
+        "I didn't catch that. Can you try again?"
+    ]
+    return random.choice(fallback_responses)
 
-def listen_and_respond():
-    try:
-        print("Hello! I'm Cloudy. How can I assist you today?")
-        speak("Hello! I'm Cloudy. How can I assist you today?")
-        
-        state = None
+def process_message(message):
+    arrayList = []
+    cleaned_message = preprocess_text(message)
+    ints = predict_class(cleaned_message)
+    print("Recognized intents:", ints)
+    response = get_response(ints, intents)
+    arrayList.append(response) 
+    if response.startswith("I'm sorry") or response.startswith("I'm not sure"):
+        response = get_fallback_response()
+        arrayList.append(response) 
+    if any(intent['intent'] == 'calculate_loan' for intent in ints):
         loan_amount = None
         annual_interest_rate = None
         loan_term_years = None
-        
-        while True:
-            with sr.Microphone() as source:
-                print("Listening...")
-                recognizer.adjust_for_ambient_noise(source)
-                try:
-                    audio = recognizer.listen(source, timeout=5)
-                except sr.WaitTimeoutError:
-                    print("Timeout occurred while waiting for audio.")
-                    speak("Can you please repeat that?")
-                    continue
-                try:
-                    print("Recognizing...")
-                    converted_text = recognizer.recognize_google(audio)
-                    print("You said:", converted_text)
-                    print("Lowercased text:", converted_text.lower())
-                    
-                    if state == "ask_loan_amount":
-                        loan_amount = w2n.word_to_num(converted_text)
-                        print("Recognized loan amount:", loan_amount)
-                        state = "ask_annual_interest_rate"
-                        speak("Got it. Now, please provide the annual interest rate.")
-                    
-                    elif state == "ask_annual_interest_rate":
-                        annual_interest_rate = w2n.word_to_num(converted_text)
-                        print("Recognized annual interest rate:", annual_interest_rate)
-                        state = "ask_loan_term_years"
-                        speak("Thanks. Finally, please provide the loan term in years.")
-                    
-                    elif state == "ask_loan_term_years":
-                        loan_term_years = w2n.word_to_num(converted_text)
-                        print("Recognized loan term (years):", loan_term_years)
-                        state = None
-                        monthly_payment = calculate_loan_payment(loan_amount, annual_interest_rate, loan_term_years)
-                        print("Your monthly loan payment is:", monthly_payment)
-                        speak(f"Your monthly loan payment is {monthly_payment} USD.")
-                    
-                    else:
-                        ints = predict_class(converted_text)
-                        res = get_response(ints, intents)
-                        print(res)
-                        speak(res)
-                        
-                        if any(pattern in converted_text.lower() for pattern in goodbye_patterns):
-                            print("Goodbye!")
-                            speak("Goodbye!")
-                            break
-                            
-                        if any(pattern in converted_text.lower() for pattern in loan_patterns):
-                            state = "ask_loan_amount"
-                            speak("Sure. What is the loan amount?")
-                            
-                except sr.UnknownValueError:
-                    print("I'm sorry I could not understand you. Can you please repeat what you said.")
-                    speak("I'm sorry I could not understand you. Can you please repeat what you said.")
-                    continue
-                except sr.RequestError as e:
-                    print("Sorry, an error occurred. {0}".format(e))
-                    continue
-    except Exception as e:
-        print("An exception occurred:", e)
+        tokens = cleaned_message.split()
+        for i in range(len(tokens)):
+            if tokens[i].isdigit():
+                loan_amount = int(tokens[i])
+            elif tokens[i].lower() in ['interest', 'rate']:
+                annual_interest_rate = convert_word_to_number(tokens[i-1])
+            elif tokens[i].lower() == 'years':
+                loan_term_years = convert_word_to_number(tokens[i-1])
+        if all([loan_amount, annual_interest_rate, loan_term_years]):
+            monthly_payment = calculate_loan_payment(loan_amount, annual_interest_rate, loan_term_years)
+            response = f"Your estimated monthly payment for a loan of ${loan_amount} at an interest rate of {annual_interest_rate}% over {loan_term_years} years is ${monthly_payment:.2f}."
+            arrayList.append(response)        
+    return arrayList
 
-print("Chatbot is running!")
-
-goodbye_patterns = [pattern.lower() for intent in intents["intents"] if intent["tag"] == "goodbye" for pattern in intent["patterns"]]
-loan_patterns = [pattern.lower() for intent in intents["intents"] if intent["tag"] == "calculate_loan" for pattern in intent["patterns"]]
-
-listen_and_respond()
+if __name__ == '__main__':
+    app.run(debug=True)
