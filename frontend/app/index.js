@@ -23,13 +23,13 @@ export default function LoadingPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center', // Center content vertically
+    justifyContent: 'center', 
     alignItems: 'center',
-    backgroundColor: '#FFFF', // light purple background
+    backgroundColor: '#FFFF', 
   },
   upperContainer: {
-    alignItems: 'center', // Center content horizontally
-    marginTop: hp('1%') // Adjust margin from top responsively
+    alignItems: 'center', 
+    marginTop: hp('1%') 
   },
   logoContainer: {
     alignItems: 'center',
@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: hp('12%'), // Adjust font size responsively
     fontWeight: 'bold',
-    color: '#333333', // Adjust text color as needed
+    color: '#333333', 
     marginBottom: hp('1%'), // Adjust margin from appName to description responsively
   },
   description: {
     fontSize: hp('2%'), // Adjust font size responsively
-    fontWeight: '600', // Adjust font weight as needed
-    color: '#666666', // Adjust text color as needed
+    fontWeight: '600', 
+    color: '#666666', 
     justifyContent:'center',
     lineHeight: hp('3%'), // Adjust the space between lines of text
     marginBottom: hp('3%'), // Adjust margin from description to logo responsively

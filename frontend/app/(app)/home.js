@@ -1,11 +1,11 @@
 import { View, Text, Pressable, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect } from 'react'; // Import useEffect
+import React, { useState, useEffect } from 'react'; 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../context/authContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Voice from '@react-native-voice/voice';
 
-// (app) protected folder 
+// (app) folder 
 export default function Home() {
     const { logout, user } = useAuth();
     const handleLogout = async () => {
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   cardText: {
       fontSize: wp(4.8),
       fontWeight: 'bold',
-      color: '#374151', // gray-700
+      color: '#374151', 
     },
   cardTextTwo: {
       fontSize: wp(4.2),
