@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     marginBottom: hp('3%'), // Adjust margin from description to logo responsively
   },
   logo: {
-    width: wp('40%'), // Adjust logo size responsively
-    height: wp('40%'),
+    width: wp('30%'), // Adjust logo size responsively
+    height: wp('30%'),
     borderRadius: wp('100%'), // Adjust border radius responsively
   },
 });

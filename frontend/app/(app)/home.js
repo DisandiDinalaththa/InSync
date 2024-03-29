@@ -1,12 +1,11 @@
 import { View, Text, Pressable, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect } from 'react'; 
+import React from 'react'; 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../context/authContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Voice from '@react-native-voice/voice';
 import { FontAwesome } from '@expo/vector-icons';
-
-// (app) folder 
+import SpeechToText from '../../components/SpeechToText';
+ 
 export default function Home() {
     const { logout, user } = useAuth();
     const handleLogout = async () => {
@@ -14,186 +13,29 @@ export default function Home() {
         console.log("User logged out", user);
     };
     console.log('user data: ', user);
-
-    const [recording, setRecording] = useState(false);
-
-    useEffect(() => { // Initialize Voice module when component mounts
-        Voice.onSpeechResults = onSpeechResults; // Set up onSpeechResults handler
-        return () => {
-            Voice.destroy().then(Voice.removeAllListeners); // Clean up Voice module when component unmounts
-        };
-    }, []);
-
-    // Function to handle the speech-to-text recognition
-    const startSpeechToText = async () => {
-        try {
-            await Voice.start('en-US');
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    // Function to handle speech results
-    const onSpeechResults = (event) => {
-        const recognizedText = event.value[0];
-        console.log("Recognized Text:", recognizedText);
-    };
-
-    const handleRecordingToggle = () => {
-        if (!recording) {
-            startSpeechToText();
-        } else {
-            Voice.stop();
-        }
-        setRecording(!recording);
-    };
-
-    const renderRecordingButton = () => {
-        if (recording) {
-            return (
-                <TouchableOpacity onPress={handleRecordingToggle}>
-                    <Image
-                        source={require('../../public/images/voiceLoading.gif')}
-                        style={styles.recordingIcon}
-                    />
-                </TouchableOpacity>
-            );
-        } else {
-            return (
-                <TouchableOpacity onPress={handleRecordingToggle}>
-                    <Image
-                        source={require('../../public/images/recordingIcon.png')}
-                        style={styles.recordingIcon}
-                    />
-                </TouchableOpacity>
-            );
-        }
-    };
+      
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={styles.maincontainer}>
+            <View style={styles.mainContainer}>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: wp(4), marginTop: hp(2) }}>
                     <Pressable onPress={handleLogout}>
                         <FontAwesome name="sign-out" size={30} color="#60BAAE" />
                     </Pressable>
                 </View>
-
-                <View style={styles.logoContainer}>
-                    <Image source={require('../../public/images/logo.png')} style={styles.logo} />
-                </View>
-
-                <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Hi! I'm Cloudy</Text>
-                    <Text style={{ fontSize: hp(2), fontWeight:'500', color: '#6B7280', textAlign: 'center', marginTop: hp(1), margin: hp(1) }}>Now you can interact with our AI agent to get answers for your queries!</Text>
-                </View>
-
-                {/* Added card containers */}
-                <View style={styles.messageContainer}>
-                    <View style={styles.cardContainer}>
-                        <View style={styles.cardContent}>
-                            <Image source={require('../../public/images/loan.jpg')} style={styles.cardlogo} />
-                            <View style={styles.textContainer}>
-                                <Text style={styles.cardText}>Loan Calculation</Text>
-                                <Text style={styles.cardTextTwo}>Improve your financial decision with intelligent numerical data analysis.</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.cardContainer}>
-                        <View style={styles.cardContent}>
-                            <Image source={require('../../public/images/fraud.jpg')} style={styles.cardlogo} />
-                            <View style={styles.textContainer}>
-                                <Text style={styles.cardText}>Stop unauthorized transactions</Text>
-                                <Text style={styles.cardTextTwo}>Notify your bank to prevent unauthorized transactions.</Text>
-                            </View>
-                        </View>
-                    </View>
-                    
-                </View>
-
-                {/* End of added card containers */}
-
-                <View style={styles.buttonContainer}>
-                    {renderRecordingButton()}
-                </View>
+                {/* speech to text*/}
+                <SpeechToText/>
+   
+   
             </View>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    maincontainer: {
+    mainContainer: {
         flex: 1,
         backgroundColor: '#FFFF',
-    },
-    logoContainer: {
-        alignItems: 'center',
-        marginTop: hp(5),
-    },
-    logo: {
-        width: wp(20),
-        height: wp(20),
-        borderRadius: wp(10),
-    },
-    titleContainer: {
-        flex: 1,
-        marginTop: hp(2),
-        
-    },
-    title: {
-        fontSize: wp(5),
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: '#374151',
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: hp(2),
-        marginBottom: hp(2),
-        marginLeft: hp(1),
-        marginRight: hp(1),
-    },
-    recordingIcon: {
-        width: hp(12),
-        height: hp(12),
-        borderRadius: hp(5),
-    },
-    // Added styles for card containers
-    messageContainer: {
-      alignItems: 'stretch',
-      marginBottom: hp(10),
-    },
-  cardContainer: {
-      backgroundColor: '#FCEAFF',  
-      padding: wp(4),
-      borderRadius: wp(5),
-      margin: hp(2),
-      
-    },
-  cardContent: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      paddingHorizontal: wp(2),
-    },
-  cardlogo: {
-      height: hp(7),
-      width: hp(7),
-      borderRadius: hp(100),
-      marginRight: wp(5),
-    },
-  textContainer: {
-      flex: 1,
-    },
-  cardText: {
-      fontSize: wp(4.8),
-      fontWeight: 'bold',
-      color: '#374151', 
-    },
-  cardTextTwo: {
-      fontSize: wp(4.2),
-      color: '#6B7280', 
-    },
+    }
+    
 });

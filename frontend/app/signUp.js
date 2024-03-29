@@ -36,7 +36,7 @@ export default function SignUP() {
 
   return (
     <KeyboardView>
-      <StatusBar style='dark'/>
+      <StatusBar style='light'/>
       <View style={{paddingTop: hp(12), paddingHorizontal: wp(8)}} className="flex-1 gap-10">
         {/*image */}
         <View >
