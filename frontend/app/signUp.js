@@ -51,7 +51,7 @@ export default function SignUP() {
 
             {/*username*/}
             <View style = {{height: hp(6)}} className= "flex-row gap-4 bg-neutral-200 items-center rounded-xl">
-              <Feather name="user" size= {hp(2.4)} color="gray" style = {{marginLeft: 12}} />
+              <Feather name="user" size= {hp(2.7)} color="gray" style = {{marginLeft: 12}} />
               <TextInput
                 onChangeText={value => usernameRef.current = value} 
                 style={{fontSize: hp(2)}}
@@ -96,7 +96,7 @@ export default function SignUP() {
                   
                 ):(
                   
-                  <TouchableOpacity onPress={handleRegister} style={{height: hp(5),  backgroundColor: '#F3C623', padding: 7, marginTop: 40, borderRadius: 15, width:120, alignItems:"center", marginLeft: 120, marginBottom: 12}} >
+                  <TouchableOpacity onPress={handleRegister} style={{height: hp(5),  backgroundColor: 'purple', padding: 7, marginTop: 40, borderRadius: 15, width:120, alignItems:"center", marginLeft: 120, marginBottom: 12}} >
                     <Text style={{fontSize:hp(2.5)}} className="text-white font-bold tracking-wider "> Sign Up</Text>
                   </TouchableOpacity>
                 )

@@ -75,7 +75,7 @@ export default function Home() {
             <View style={styles.maincontainer}>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: wp(4), marginTop: hp(2) }}>
                     <Pressable onPress={handleLogout}>
-                        <FontAwesome name="sign-out" size={30} color="#6B7290" />
+                        <FontAwesome name="sign-out" size={30} color="#60BAAE" />
                     </Pressable>
                 </View>
 
@@ -104,7 +104,7 @@ export default function Home() {
                             <Image source={require('../../public/images/fraud.jpg')} style={styles.cardlogo} />
                             <View style={styles.textContainer}>
                                 <Text style={styles.cardText}>Stop unauthorized transactions</Text>
-                                <Text style={styles.cardTextTwo}>Notify your bank to prevent further unauthorised transactions.</Text>
+                                <Text style={styles.cardTextTwo}>Notify your bank to prevent unauthorized transactions.</Text>
                             </View>
                         </View>
                     </View>
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
       marginBottom: hp(10),
     },
   cardContainer: {
-      backgroundColor: 'rgba(199, 200, 201, 0.7)', // light purple 
+      backgroundColor: '#FCEAFF',  
       padding: wp(4),
       borderRadius: wp(5),
       margin: hp(2),
@@ -179,9 +179,9 @@ const styles = StyleSheet.create({
       paddingHorizontal: wp(2),
     },
   cardlogo: {
-      height: hp(4),
-      width: hp(4),
-      borderRadius: hp(2),
+      height: hp(7),
+      width: hp(7),
+      borderRadius: hp(100),
       marginRight: wp(5),
     },
   textContainer: {
