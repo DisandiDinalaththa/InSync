@@ -8,13 +8,16 @@ Customer Service Steamlining Application
 
 **frontend**
 
+//libraries 1
+npm install @react-native-voice/voice
+//libraries 2
+npm install expo-av
+//libraries 3
+npm install expo-file-system
+
+
 //node modules
 npm install
-
-//libraries
-npm install @react-native-voice/voice
-npm install expo-av
-npm install expo-file-system
 
 
 //build command
@@ -23,5 +26,7 @@ npx expo prebuild -p android
 //run command
 npx expo run android
 
+//Give Permission on Device.
+
 //clear cache
-clear cache command : npx react-native start --reset-cache
+npx react-native start --reset-cache
