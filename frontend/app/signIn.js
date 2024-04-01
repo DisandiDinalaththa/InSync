@@ -9,23 +9,25 @@ import KeyboardView from '../components/keyboardView';
 import { useAuth } from '../context/authContext';
 
 export default function SignIn() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const {login}= useAuth();
+  const router = useRouter(); // Router instance
+  const [loading, setLoading] = useState(false); // State for loading indicator
+  const {login}= useAuth(); // Authentication context
 
+  // Refs for email and password inputs
   const emailRef = useRef ("");
   const passwordRef =  useRef("");
 
   const  handleLogin = async() => {
+    // Check if email and password are provided
     if (!emailRef.current || !passwordRef.current){
       Alert.alert('Sign In', "Please fill email and password!");
     return;
     }
-    setLoading (true);
-    const response = await login (emailRef.current , passwordRef.current);
-    setLoading(false);
+    setLoading (true); // Start loading indicator
+    const response = await login (emailRef.current , passwordRef.current);  // Attempt login
+    setLoading(false); // Stop loading indicator
     console.log('user signed in : ', response);
-    if (!response.success) {
+    if (!response.success) {   // If login failed, show error message
       Alert.alert ('Sign In' , response.msg);
     }
 

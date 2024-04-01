@@ -18,18 +18,18 @@ export default function SignUP() {
   const emailRef = useRef ("");
   const passwordRef =  useRef("");
   const usernameRef = useRef("");
-
+  // Function to handle registration
   const  handleRegister = async() => {
-    if (!emailRef.current || !passwordRef.current || !usernameRef.current){
+    if (!emailRef.current || !passwordRef.current || !usernameRef.current){  // Check if all inputs are filled
       Alert.alert('Sign Up', "Please fill all the inputs!");
       return;
     }
-    setLoading (true);
+    setLoading (true);  // Start loading indicator
 
     let response = await register (emailRef.current, passwordRef.current, usernameRef.current );
-    setLoading(false);
+    setLoading(false);  // Stop loading indicator
 
-    if(!response.success){
+    if(!response.success){   // If registration failed, show error message
         Alert.alert('Sign Up', response.msg);
     }
   }
